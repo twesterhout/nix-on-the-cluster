@@ -8,8 +8,11 @@
 
   outputs = inputs:
     let
-      nvidiaComputeDriversFor = settings@{ cudaArch, cudaVersion, ... }: final: prev: {
+      nvidiaComputeDriversFor = settings@{ cudaArch, cudaVersion, ... }: final: prev: rec {
         nvidiaComputeDrivers = final.callPackage ./nvidiaComputeDrivers.nix settings;
+        nvidiaComputeDriversHook = ''
+          export LD_LIBRARY_PATH=${nvidiaComputeDrivers}/lib:$LD_LIBRARY_PATH
+        '';
       };
 
       pkgsFor = system: import inputs.nixpkgs ({
