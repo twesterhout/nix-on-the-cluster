@@ -56,10 +56,6 @@ let
           rm -v $out/lib/libglx*
           rm -v $out/lib/libnvcuvid*
         '';
-
-        passthru.shellHook = ''
-          export LD_LIBRARY_PATH=$out/lib:$LD_LIBRARY_PATH
-        '';
       }));
 
   settings =
@@ -68,4 +64,4 @@ let
       { inherit cudaArch cudaVersion cudaHash; }
       knownSettings;
 in
-builder settings
+builder settings.cudaArch settings.cudaVersion settings.cudaHash
