@@ -28,6 +28,10 @@
           inherit nvidiaComputeDrivers;
         });
 
+      lib = {
+        inherit nvidiaComputeDriversFor;
+      };
+
       overlays = {
         lilo = inputs.self.lib.nvidiaComputeDriversFor {
           cudaArch = "tesla";
