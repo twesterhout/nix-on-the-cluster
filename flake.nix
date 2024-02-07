@@ -21,20 +21,29 @@
         '';
       };
 
-      pkgsFor = system: import inputs.nixpkgs ({
+      pkgsFor = system: version: import inputs.nixpkgs ({
         inherit system;
         config.allowUnfree = true;
         config.cudaSupport = true;
         config.nvidia.acceptLicense = true;
         overlays = [
-          (nvidiaComputeDriversFor { cudaArch = "tesla"; cudaVersion = "535.104.12"; })
+          (nvidiaComputeDriversFor { cudaArch = "tesla"; cudaVersion = version; })
         ];
       });
     in
     {
       packages = inputs.flake-utils.lib.eachDefaultSystemMap (system:
-        with pkgsFor system; {
+        with pkgsFor system "535.104.12"; {
           inherit nvidiaComputeDrivers;
+        });
+
+      devShells = inputs.flake-utils.lib.eachDefaultSystemMap (system:
+        with pkgsFor system "535.104.12"; {
+          testSnellius = mkShell {
+            shellHook = ''
+              ${nvidiaComputeDriversHook}
+            '';
+          };
         });
 
       lib = {
