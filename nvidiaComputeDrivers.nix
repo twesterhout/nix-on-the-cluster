@@ -20,6 +20,11 @@ let
       cudaVersion = "535.104.12";
       cudaHash = "sha256-/8LYniM9JCftsf9fQ2AoqUs++G54+X4IjhHZBcgugAE=";
     }
+    {
+      cudaArch = "tesla";
+      cudaVersion = "545.23.08";
+      cudaHash = "";
+    }
   ];
 
   builder = arch: version: hash:
